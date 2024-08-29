@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class RegistrationViewController: UIViewController, UINavigationControllerDelegate {
 
@@ -17,7 +18,7 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
      
      private let imageView : UIImageView = {
          let imageView = UIImageView()
-         imageView.image = UIImage(systemName: "person")
+         imageView.image = UIImage(systemName: "person.circle")
          imageView.tintColor = .gray
          imageView.contentMode = .scaleAspectFit
          imageView.layer.masksToBounds = true
@@ -34,8 +35,8 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
          field.layer.cornerRadius = 12
          field.layer.borderWidth = 1
          field.layer.borderColor = UIColor.lightGray.cgColor
-         field.placeholder = "Enter FirstName"
-         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+         field.placeholder = "  Enter FirstName..."
+         field.leftView = UIView(frame: CGRect(x: 5, y: 0, width: 5, height: 0))
          field.backgroundColor = .white
          return field
      }()
@@ -48,8 +49,8 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
         field.layer.cornerRadius = 12
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Enter LastName"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.placeholder = " Enter LastName..."
+        field.leftView = UIView(frame: CGRect(x: 5, y: 0, width: 5, height: 0))
         field.backgroundColor = .white
         return field
     }()
@@ -62,8 +63,8 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
         field.layer.cornerRadius = 12
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
-        field.placeholder = "Enter Email Address"
-        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+        field.placeholder = " Enter Email Address..."
+        field.leftView = UIView(frame: CGRect(x: 5, y: 0, width: 5, height: 0))
         field.backgroundColor = .white
         return field
     }()
@@ -78,8 +79,8 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
          field.layer.cornerRadius = 12
          field.layer.borderWidth = 1
          field.layer.borderColor = UIColor.lightGray.cgColor
-         field.placeholder = "Enter Password"
-         field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
+         field.placeholder = " Enter Password..."
+         field.leftView = UIView(frame: CGRect(x: 5, y: 0, width: 5, height: 0))
          field.backgroundColor = .white
          field.isSecureTextEntry = true
          return field
@@ -116,11 +117,37 @@ class RegistrationViewController: UIViewController, UINavigationControllerDelega
                 alertUserLoginError()
                 return
          }
+         
+         DatabaseManager.shared.userExists(with: email) {[weak self]  exists in
+            
+             guard let strongSelf = self else { return }
+              
+             guard !exists else {
+                 // user exists already
+                 strongSelf.alertUserLoginError(message: "User aleardy has user account for that email already exists.")
+                 return
+             }
+             
+             FirebaseAuth.Auth.auth().createUser(withEmail: email, password: password, completion: {authResult , error in
+                
+                 guard  authResult != nil , error == nil else {
+                     strongSelf.alertUserLoginError(message: "Error Creating user")
+                     return
+                 }
+                 
+                 DatabaseManager.shared.insertUser(with:
+                                                    ChatAppUser(fistName: firstName,
+                                                                lastName: lastName,
+                                                                emailAddress: email))
+                 
+                 strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+             })
+         }
      }
      
-       func alertUserLoginError() {
+    func alertUserLoginError(message : String = "Please Enter Information to fill up for new Account") {
          let controller = UIAlertController(title: "OOPS",
-                                            message: "Please Enter Information to fill up for new Account",
+                                            message: message ,
                                             preferredStyle: .alert)
          controller.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
          present(controller, animated: true)
