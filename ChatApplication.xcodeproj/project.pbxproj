@@ -23,7 +23,7 @@
 		31C10E772C7F6ACF00CC6664 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C10E762C7F6ACF00CC6664 /* DatabaseManager.swift */; };
 		31C540B82C746DF000015E07 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31C540B72C746DF000015E07 /* Extensions.swift */; };
 		31CB249D2C806EFE005E12EE /* ChatAppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CB249C2C806EFE005E12EE /* ChatAppUser.swift */; };
-		8D8FA1CD4766D1FB38E6446C /* Pods_ChatApplication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65132BA92F3E0A9578D5566C /* Pods_ChatApplication.framework */; };
+		31F6CDE12C833BB70052B739 /* Pods_ChatApplication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 65132BA92F3E0A9578D5566C /* Pods_ChatApplication.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +45,7 @@
 		31C10E762C7F6ACF00CC6664 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		31C540B72C746DF000015E07 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		31CB249C2C806EFE005E12EE /* ChatAppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppUser.swift; sourceTree = "<group>"; };
+		31F6CDE02C8338D50052B739 /* ChatApplication.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ChatApplication.entitlements; sourceTree = "<group>"; };
 		65132BA92F3E0A9578D5566C /* Pods_ChatApplication.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApplication.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFAC3EEA8BA6DEA6A7FF11AD /* Pods-ChatApplication.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApplication.debug.xcconfig"; path = "Target Support Files/Pods-ChatApplication/Pods-ChatApplication.debug.xcconfig"; sourceTree = "<group>"; };
 		EE6FFD250D9C07F8EFCACD85 /* Pods-ChatApplication.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApplication.release.xcconfig"; path = "Target Support Files/Pods-ChatApplication/Pods-ChatApplication.release.xcconfig"; sourceTree = "<group>"; };
@@ -55,7 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8D8FA1CD4766D1FB38E6446C /* Pods_ChatApplication.framework in Frameworks */,
+				31F6CDE12C833BB70052B739 /* Pods_ChatApplication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +85,7 @@
 		316B78A92C708515007716E3 /* ChatApplication */ = {
 			isa = PBXGroup;
 			children = (
+				31F6CDE02C8338D50052B739 /* ChatApplication.entitlements */,
 				316B78C32C70997F007716E3 /* Views */,
 				316B78C22C7098C8007716E3 /* StoryBoard */,
 				316B78C12C709898007716E3 /* Controllers */,
@@ -187,6 +189,8 @@
 			dependencies = (
 			);
 			name = ChatApplication;
+			packageProductDependencies = (
+			);
 			productName = ChatApplication;
 			productReference = 316B78A72C708515007716E3 /* ChatApplication.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +219,9 @@
 				Base,
 			);
 			mainGroup = 316B789E2C708515007716E3;
+			packageReferences = (
+				31F6CDDF2C8333980052B739 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+			);
 			productRefGroup = 316B78A82C708515007716E3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -447,6 +454,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ChatApplication/ChatApplication.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AKL52KQGPS;
@@ -477,6 +485,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ChatApplication/ChatApplication.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = AKL52KQGPS;
@@ -523,6 +532,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		31F6CDDF2C8333980052B739 /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 316B789F2C708515007716E3 /* Project object */;
 }
