@@ -18,7 +18,8 @@ final class DatabaseManager {
 }
 
 extension DatabaseManager {
-    
+    // MARK: - Check if user exists in database 
+
     func userExists(with email : String , completion : @escaping((Bool)-> Void)) {
         
             var safeEmail = email.replacingOccurrences(of: ".", with: "-")
