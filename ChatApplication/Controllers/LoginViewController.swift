@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseAuth
 import FBSDKLoginKit
+import GoogleSignIn
 
 class LoginViewController: UIViewController {
     
@@ -22,6 +23,8 @@ class LoginViewController: UIViewController {
         button.permissions = ["email", "public_profile"]
         return button
     }()
+    
+    private let googleSignInbutton = GIDSignInButton()
     
     private let imageView : UIImageView = {
         let imageView = UIImageView()
@@ -105,9 +108,21 @@ class LoginViewController: UIViewController {
         controller.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(controller, animated: true)
     }
+    
+    private var loginObserver : NSObjectProtocol?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loginObserver =  NotificationCenter.default.addObserver(forName: .didloginNotification,
+                                               object: nil,
+                                               queue: .main) {  [weak self] _ in
+            
+           guard let strongSelf = self else {return}
+           strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        }
+        
+        GIDSignIn.sharedInstance().presentingViewController = self
         view.backgroundColor = .white
         title = "Log In"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Register",
@@ -125,7 +140,14 @@ class LoginViewController: UIViewController {
         scrollView.addSubview(passwordTextField)
         scrollView.addSubview(loginButton)
         scrollView.addSubview(facebookLoginButton)
+        scrollView.addSubview(googleSignInbutton)
         
+    }
+    
+    deinit {
+        if let observer = loginObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -152,11 +174,18 @@ class LoginViewController: UIViewController {
                                       y: loginButton.bottom+10,
                                       width: scrollView.width-60,
                                       height: 52)
+        googleSignInbutton.frame = CGRect(x: 30,
+                                      y: facebookLoginButton.bottom+20,
+                                      width: scrollView.width-60,
+                                      height: 52)
         
-        facebookLoginButton.frame.origin.y = loginButton.bottom + 20
+        facebookLoginButton.frame.origin.y = loginButton.bottom + 10
         facebookLoginButton.layer.cornerRadius = 12
         facebookLoginButton.layer.masksToBounds = true
         facebookLoginButton.delegate = self
+        
+        googleSignInbutton.layer.cornerRadius = 12
+        googleSignInbutton.layer.masksToBounds = true
 
     }
     

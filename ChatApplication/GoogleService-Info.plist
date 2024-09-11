@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>720301781331-g8sf3l4dd7kajpn35i7t3mb27ci8j6oo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.720301781331-g8sf3l4dd7kajpn35i7t3mb27ci8j6oo</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDEpXtYzQlnmf1WIs9z0X__ug2iq2qrDMI</string>
 	<key>GCM_SENDER_ID</key>
@@ -15,16 +19,18 @@
 	<key>STORAGE_BUCKET</key>
 	<string>chatapplication-eeb04.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:720301781331:ios:8d0230a94dcf5aded9f1a6</string>
+	<key>DATABASE_URL</key>
+	<string>https://chatapplication-eeb04-default-rtdb.firebaseio.com</string>
 </dict>
 </plist>

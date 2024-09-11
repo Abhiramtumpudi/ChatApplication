@@ -16,6 +16,10 @@ pod 'Firebase/Database'
 pod 'FacebookCore'
 pod 'FBSDKLoginKit'
 
+# pods for GoogleSignIn
+
+pod 'GoogleSignIn', '~> 5.0.2'
+
 
 
 
