@@ -9,5 +9,7 @@ import Foundation
 
 
 class Test {
-    
+    func printStatements() {
+        print("printStatements")
+    }
 }
