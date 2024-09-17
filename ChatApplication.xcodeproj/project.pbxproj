@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31524B732C99C8A500CAFE18 /* NewFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31524B722C99C8A500CAFE18 /* NewFile.swift */; };
 		316B78AB2C708515007716E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316B78AA2C708515007716E3 /* AppDelegate.swift */; };
 		316B78AD2C708515007716E3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316B78AC2C708515007716E3 /* SceneDelegate.swift */; };
 		316B78AF2C708515007716E3 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 316B78AE2C708515007716E3 /* ConversationViewController.swift */; };
@@ -27,6 +28,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		31524B722C99C8A500CAFE18 /* NewFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFile.swift; sourceTree = "<group>"; };
 		316B78A72C708515007716E3 /* ChatApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		316B78AA2C708515007716E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		316B78AC2C708515007716E3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				316B78CA2C709EE8007716E3 /* VideoPlayerViewController.swift */,
 				316B78CC2C709FC0007716E3 /* NewConversationViewController.swift */,
 				316B78CE2C709FDB007716E3 /* ProfileViewController.swift */,
+				31524B722C99C8A500CAFE18 /* NewFile.swift */,
 				316B78D82C70A749007716E3 /* RegistrationViewController.swift */,
 				316B78DA2C70A756007716E3 /* LoginViewController.swift */,
 			);
@@ -317,6 +320,7 @@
 				316B78AB2C708515007716E3 /* AppDelegate.swift in Sources */,
 				31C540B82C746DF000015E07 /* Extensions.swift in Sources */,
 				316B78CB2C709EE8007716E3 /* VideoPlayerViewController.swift in Sources */,
+				31524B732C99C8A500CAFE18 /* NewFile.swift in Sources */,
 				316B78AD2C708515007716E3 /* SceneDelegate.swift in Sources */,
 				316B78CF2C709FDB007716E3 /* ProfileViewController.swift in Sources */,
 				316B78C92C709ED5007716E3 /* PhotoViewerViewController.swift in Sources */,
