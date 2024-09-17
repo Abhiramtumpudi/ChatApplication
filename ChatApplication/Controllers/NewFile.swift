@@ -9,5 +9,9 @@ import Foundation
 
 
 class Test {
-    
+    func printStatements() {
+        print("printStatements1")
+        print("printStatements2")
+        print("printStatements3")
+    }
 }
