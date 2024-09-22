@@ -10,7 +10,7 @@ import JGProgressHUD
 
 class NewConversationViewController: UIViewController {
     
-    private let spinner = JGProgressHUD()
+    private let spinner = JGProgressHUD(style: .dark)
     
     private var searchBar : UISearchBar = {
         let UISearchBar = UISearchBar()
@@ -70,5 +70,16 @@ extension NewConversationViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
          
+        guard let text = searchBar.text , !text.replacingOccurrences(of: " ", with: "").isEmpty else {
+            return
+        }
+        spinner.show(in: view)
+        
+        self.searchUsers(query: text)
+        
+    }
+    
+    func searchUsers(query : String) {
+        
     }
 }
