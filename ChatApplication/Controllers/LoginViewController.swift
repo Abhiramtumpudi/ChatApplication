@@ -15,10 +15,10 @@ class LoginViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
-   private let scrollView : UIScrollView = {
+    private let scrollView : UIScrollView = {
         let scrollView = UIScrollView()
-       scrollView.clipsToBounds = true
-       return scrollView
+        scrollView.clipsToBounds = true
+        return scrollView
     }()
     
     private let facebookLoginButton : FBLoginButton = {
@@ -110,23 +110,23 @@ class LoginViewController: UIViewController {
         
     }
     
-      func alertUserLoginError() {
+    func alertUserLoginError() {
         let controller = UIAlertController(title: "oops", message: "Please Enter Information", preferredStyle: .alert)
         controller.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
         present(controller, animated: true)
     }
     
     private var loginObserver : NSObjectProtocol?
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         loginObserver =  NotificationCenter.default.addObserver(forName: .didloginNotification,
-                                               object: nil,
-                                               queue: .main) {  [weak self] _ in
+                                                                object: nil,
+                                                                queue: .main) {  [weak self] _ in
             
-           guard let strongSelf = self else {return}
-           strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+            guard let strongSelf = self else {return}
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
         }
         
         GIDSignIn.sharedInstance().presentingViewController = self
@@ -136,7 +136,7 @@ class LoginViewController: UIViewController {
                                                             style: .done,
                                                             target: self,
                                                             action: #selector(didTapRegister))
-       
+        
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -162,29 +162,29 @@ class LoginViewController: UIViewController {
         scrollView.frame = view.bounds
         let size = scrollView.width / 3
         imageView.frame = CGRect(x: (scrollView.width-size)/2,
-                                      y: 20,
-                                      width: size,
-                                      height: size)
+                                 y: 20,
+                                 width: size,
+                                 height: size)
         emailTextField.frame = CGRect(x: 30,
                                       y: imageView.bottom+10,
                                       width: scrollView.width-60,
                                       height: 52)
         passwordTextField.frame = CGRect(x: 30,
-                                      y: emailTextField.bottom+10,
-                                      width: scrollView.width-60,
-                                      height: 52)
+                                         y: emailTextField.bottom+10,
+                                         width: scrollView.width-60,
+                                         height: 52)
         loginButton.frame = CGRect(x: 30,
-                                      y: passwordTextField.bottom+10,
-                                      width: scrollView.width-60,
-                                      height: 52)
+                                   y: passwordTextField.bottom+10,
+                                   width: scrollView.width-60,
+                                   height: 52)
         facebookLoginButton.frame = CGRect(x: 30,
-                                      y: loginButton.bottom+10,
-                                      width: scrollView.width-60,
-                                      height: 52)
+                                           y: loginButton.bottom+10,
+                                           width: scrollView.width-60,
+                                           height: 52)
         googleSignInbutton.frame = CGRect(x: 30,
-                                      y: facebookLoginButton.bottom+20,
-                                      width: scrollView.width-60,
-                                      height: 52)
+                                          y: facebookLoginButton.bottom+20,
+                                          width: scrollView.width-60,
+                                          height: 52)
         
         facebookLoginButton.frame.origin.y = loginButton.bottom + 10
         facebookLoginButton.layer.cornerRadius = 12
@@ -193,10 +193,10 @@ class LoginViewController: UIViewController {
         
         googleSignInbutton.layer.cornerRadius = 12
         googleSignInbutton.layer.masksToBounds = true
-
+        
     }
     
-
+    
     @objc func didTapRegister() {
         let vc = RegistrationViewController()
         vc.title = "Create Account"
@@ -235,7 +235,7 @@ extension LoginViewController : LoginButtonDelegate {
         }
         
         let facebookRequest = FBSDKLoginKit.GraphRequest(graphPath: "me",
-                                                         parameters: ["fields" : "email , name"],
+                                                         parameters: ["fields" : "email , first_name , last_name , picture.type(large)"],
                                                          tokenString: token,
                                                          version: nil,
                                                          httpMethod: .get)
@@ -245,26 +245,45 @@ extension LoginViewController : LoginButtonDelegate {
                 print("failed to make facebook graph request")
                 return
             }
-                        
-            guard let userName =  result["name"] as? String ,
-                  let email = result["email"] as? String else {
+            
+            print(result)
+            guard let firstName =  result["first_name"] as? String ,
+                  let lastName =  result["last_name"] as? String ,
+                  let email = result["email"] as? String,
+                  let picture = result["picture"] as? [String : Any],
+                  let data = picture["data"] as? [String : Any] ,
+                  let pictureUrl = data["url"] as? String else {
                 print("Unable to get user details from facebook login")
                       return
             }
             
-            let nameComponent  = userName.components(separatedBy: " ")
-            guard nameComponent.count == 2 else {
-                return
-            }
-            
-            let firstNameComponent = nameComponent[0]
-            let lastNameComponent = nameComponent[1]
-            
             DatabaseManager.shared.userExists(with: email) { exists in
                 if !exists {
-                    DatabaseManager.shared.insertUser(with: ChatAppUser(fistName: firstNameComponent,
-                                                                        lastName: lastNameComponent,
-                                                                        emailAddress: email))
+                    let ChatUser = ChatAppUser(fistName: firstName,
+                                               lastName: lastName,
+                                               emailAddress: email)
+                    DatabaseManager.shared.insertUser(with: ChatUser) { success in
+                        guard let url = URL(string: pictureUrl) else {
+                            return
+                        }
+                        print("Downloading data from facebook image")
+                        URLSession.shared.dataTask(with: url) { data , _ , error in
+                            guard let data = data else {
+                                print("failed to get data from facebook")
+                                return
+                            }
+                            let fileName = ChatUser.profilePictureUrl
+                            StorageManager.shared.uploadProfilePicture(with: data , fileName: fileName , completion: { results in
+                                switch results {
+                                case .success(let downLoadUrl) :
+                                    UserDefaults.standard.set(downLoadUrl, forKey: "profile_Picture_url")
+                                    print(downLoadUrl)
+                                case .failure(let error) :
+                                    print("Storage Manager error : \(error)")
+                                }
+                            })
+                        }.resume()
+                    }
                 }
             }
             
@@ -287,5 +306,5 @@ extension LoginViewController : LoginButtonDelegate {
         }
         
     }
-        
+    
 }

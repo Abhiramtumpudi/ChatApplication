@@ -42,9 +42,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate , GIDSignInDelegate   {
         DatabaseManager.shared.userExists(with: email) { exists in
             if !exists {
                 // inserts to database
-                DatabaseManager.shared.insertUser(with: ChatAppUser(fistName: firstName,
-                                                                    lastName: lastName,
-                                                                    emailAddress: email))
+                let chatUser = ChatAppUser(fistName: firstName,
+                                           lastName: lastName,
+                                           emailAddress: email)
+                DatabaseManager.shared.insertUser(with: chatUser , completion: { success in
+                    if success {
+                        // upload picture
+                        
+                        guard let url = user.profile.imageURL(withDimension: 200) else { return }
+                        URLSession.shared.dataTask(with: url, completionHandler: { data , _ , _ in
+                            guard let data = data else {return}
+                            let fileName = chatUser.profilePictureUrl
+                            StorageManager.shared.uploadProfilePicture(with: data , fileName: fileName , completion: { results in
+                                switch results {
+                                case .success(let downLoadUrl) :
+                                    UserDefaults.standard.set(downLoadUrl, forKey: "profile_Picture_url")
+                                    print(downLoadUrl)
+                                case .failure(let error) :
+                                    print("Storage Manager error : \(error)")
+                                }
+                            })
+                        }).resume()
+                        
+                    }
+                })
             }
         }
         
