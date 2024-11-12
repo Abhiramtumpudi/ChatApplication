@@ -29,7 +29,7 @@ final class StorageManager {
             self.storage.child("images\(fileName)").downloadURL(completion: { url , error in
                 guard let url = url else {
                     print("failed to upload a download to url")
-                    completion(.failure(StoargeError.failedToLoadurl))
+                    completion(.failure(StoargeError.failedTodownLoadurl))
                     return
                 }
                 
@@ -43,6 +43,19 @@ final class StorageManager {
     
     public enum StoargeError : Error {
         case failedToUpload
-        case failedToLoadurl
+        case failedTodownLoadurl
+    }
+    
+    public func downloadUrl(for path : String , completion : @escaping (Result<URL , Error>)-> Void) {
+        
+        let reference = storage.child(path)
+        
+        reference.downloadURL(completion: { url, error in
+            guard let url = url , error == nil else {
+                completion(.failure(StoargeError.failedTodownLoadurl))
+                return
+            }
+            completion(.success(url))
+        })
     }
 }
