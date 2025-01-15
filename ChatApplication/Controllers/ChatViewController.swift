@@ -7,6 +7,7 @@
 
 import UIKit
 import MessageKit
+import InputBarAccessoryView
 
 struct Message : MessageType {
     var sender: any MessageKit.SenderType
@@ -29,29 +30,52 @@ class ChatViewController: MessagesViewController {
     private var selfSender = Sender(senderId: "1",
                                     displayName: "Joe Smith",
                                     photoUrl: "")
+    
+    public let OtherUserEmail : String
+    
+    public var isNewConverstaion = false
+    
+    init(with email : String) {
+        self.OtherUserEmail = email
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init coder has not implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        messages.append(Message(sender: selfSender,
-                                messageId: "1",
-                                sentDate: Date(),
-                                kind: .text("hello World Message1")))
-        messages.append(Message(sender: selfSender,
-                                messageId: "2",
-                                sentDate: Date(),
-                                kind: .text("Hello World Message2")))
-        messages.append(Message(sender: selfSender,
-                                messageId: "3",
-                                sentDate: Date(),
-                                kind: .text("Hello World Message3")))
         // Do any additional setup after loading the view.
         messagesCollectionView.messagesDataSource      = self
         messagesCollectionView.messagesDisplayDelegate = self
         messagesCollectionView.messagesLayoutDelegate  = self
+        messageInputBar.delegate = self
 
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        messageInputBar.inputTextView.becomeFirstResponder()
+    }
 
+}
+
+extension ChatViewController : InputBarAccessoryViewDelegate {
+    
+    func inputBar(_ inputBar: InputBarAccessoryView, didPressSendButtonWith text: String) {
+        guard !text.replacingOccurrences(of: " ", with: "").isEmpty else {return}
+        
+        // send message
+        print("Sending : \(text)")
+        if isNewConverstaion {
+            // create new converstaion in db
+            
+        } else {
+            // otherwise append to conversation data
+        }
+    }
 }
 
 extension ChatViewController : MessagesDataSource , MessagesLayoutDelegate , MessagesDisplayDelegate  {

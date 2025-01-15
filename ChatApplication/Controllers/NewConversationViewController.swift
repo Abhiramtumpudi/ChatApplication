@@ -12,6 +12,8 @@ class NewConversationViewController: UIViewController {
     
     private let spinner = JGProgressHUD(style: .dark)
     
+    public var completion : (([String : String])-> (Void))?
+
     var users = [[String : String]]()
     
     var results = [[String : String]]()
@@ -75,15 +77,7 @@ class NewConversationViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
+  
 
 }
 
@@ -96,6 +90,15 @@ extension NewConversationViewController : UITableViewDelegate , UITableViewDataS
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell" , for: indexPath)
         cell.textLabel?.text = results[indexPath.row]["name"]
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let targetdUserData = results[indexPath.row]
+        
+        dismiss(animated: true) { [weak self] in
+            self?.completion?(targetdUserData)
+        }
+       
     }
 }
 

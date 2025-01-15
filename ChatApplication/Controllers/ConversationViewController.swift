@@ -38,7 +38,7 @@ class ConversationViewController: UIViewController {
         label.isHidden = true
         return label
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose,
@@ -48,13 +48,24 @@ class ConversationViewController: UIViewController {
         view.addSubview(ConverstaionLabel)
         setUpTableViews()
         fetchConverstaion()
-
+        
     }
     
     @objc private func didTapCompose() {
         let vc = NewConversationViewController()
+        vc.completion = {[weak self] results in
+            self?.createNewConservation(result: results)
+        }
         let navVc = UINavigationController(rootViewController: vc)
         present(navVc, animated: true)
+    }
+    private func createNewConservation(result : [String : String]) {
+        guard let name = result["name"] , let email = result["email"] else {return}
+        let vc = ChatViewController(with: email)
+        vc.isNewConverstaion = true
+        vc.title = name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -105,7 +116,7 @@ extension ConversationViewController :  UITableViewDelegate , UITableViewDataSou
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let vc = ChatViewController()
+        let vc = ChatViewController(with: "email")
         vc.title = "Jhony Ive"
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
