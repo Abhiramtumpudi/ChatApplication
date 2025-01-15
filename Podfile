@@ -10,6 +10,8 @@ target 'ChatApplication' do
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
+pod 'Firebase/Storage'
+
 
 # pods for Facebook
 
@@ -20,6 +22,9 @@ pod 'FBSDKLoginKit'
 
 pod 'GoogleSignIn', '~> 5.0.2'
 
+pod 'MessageKit'
+pod 'JGProgressHUD'
+pod 'SDWebImage'
 
 
 
